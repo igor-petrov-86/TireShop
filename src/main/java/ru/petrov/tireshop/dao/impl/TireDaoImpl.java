@@ -13,32 +13,31 @@ import java.util.List;
 public class TireDaoImpl implements TireDao {
 
     @Autowired
-    private SessionFactory sessionFactory;
+    private SessionFactory session;
 
     @Override
     public void add(Tire tire) {
-        sessionFactory.getCurrentSession().save(tire);
+        session.getCurrentSession().save(tire);
     }
 
     @Override
     public void edit(Tire tire) {
-        sessionFactory.getCurrentSession().update(tire);
+        session.getCurrentSession().update(tire);
     }
 
     @Override
     public void delete(int tireID) {
-        sessionFactory.getCurrentSession().delete(getTire(tireID));
+        session.getCurrentSession().delete(getTire(tireID));
     }
 
     @Override
     public Tire getTire(int tireID) {
-        return (Tire)sessionFactory.getCurrentSession().get(Tire.class, tireID);
+        return (Tire)session.getCurrentSession().get(Tire.class, tireID);
     }
 
     @Override
     public List getAllTires() {
-        //return sessionFactory.getCurrentSession().createQuery("FROM Tire").list();
-        return null;
+        return session.getCurrentSession().createQuery("from Tire").list();
     }
 
     @Override

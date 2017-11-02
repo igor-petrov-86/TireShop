@@ -3,7 +3,6 @@ package ru.petrov.tireshop.model;
 import javax.persistence.*;
 
 @Entity
-@Table
 public class Tire {
 
     @Id
@@ -23,6 +22,7 @@ public class Tire {
 
     public Tire() {}
     public Tire(int width, int percentHeight, int radius, String brand, boolean isWinter) {
+        super();
         this.width = width;
         this.percentHeight = percentHeight;
         this.radius = radius;

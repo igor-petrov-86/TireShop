@@ -13,7 +13,31 @@
 <body>
   <div>
       <a href="/">Главная</a>&nbsp;|&nbsp;<a href="basket">Корзина</a>
-      <h2><strong>${hello}</strong></h2>
+      <h2><strong>Каталог товаров:</strong></h2>
+  </div>
+  <div>
+      <table border="1">
+          <th>ID</th>
+          <th>Ширина</th>
+          <th>Высота профиля, %</th>
+          <th>Радиус</th>
+          <th>Марка</th>
+          <th>Зимние</th>
+          <c:forEach items="${tireList}" var="tire">
+              <tr>
+                  <td>${tire.id}</td>
+                  <td>${tire.width}</td>
+                  <td>${tire.percentHeight}</td>
+                  <td>${tire.radius}</td>
+                  <td>${tire.brand}</td>
+                  <td>
+                      <c:if test="${tire.isWinter = 1}">
+                        Да
+                      </c:if>
+                  </td>
+              </tr>
+          </c:forEach>
+      </table>
   </div>
 </body>
 </html>
