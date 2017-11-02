@@ -41,7 +41,27 @@ public class TireDaoImpl implements TireDao {
     }
 
     @Override
-    public List getTiresByParams(int width, int percentHeight, int radius, String brand, boolean isWinter) {
-        return null;
+    public List getTiresByParams(int width, int percentHeight, int radius, String brand, Boolean isWinter) {
+        StringBuilder cond = new StringBuilder("");
+        if (width != 0){ cond.append("width = "); cond.append(width); }
+        if (percentHeight != 0){
+            if (cond.length() > 0) cond.append(" and ");
+            cond.append("percentHeight = "); cond.append(percentHeight);
+        }
+        if (radius != 0){
+            if (cond.length() > 0) cond.append(" and ");
+            cond.append("radius = "); cond.append(radius);
+        }
+        if (brand != null && !brand.isEmpty()){
+            if (cond.length() > 0) cond.append(" and ");
+            cond.append("brand = '"); cond.append(brand); cond.append("'");
+        }
+        if (isWinter != null) {
+            if (cond.length() > 0) cond.append(" and ");
+            cond.append("isWinter = ");  cond.append(isWinter ? 1 : 0);
+        }
+        if (cond.length() > 0) { cond.insert(0, " where "); }
+
+        return session.getCurrentSession().createQuery("from Tire "+ cond.toString()).list();
     }
 }

@@ -9,3 +9,7 @@ body {
 strong {
     text-shadow: 4px 4px 6px #B0B080;
 }
+
+a {
+    text-decoration: none;
+}

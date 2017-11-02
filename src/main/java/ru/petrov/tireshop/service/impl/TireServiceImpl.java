@@ -41,7 +41,7 @@ public class TireServiceImpl implements TireService {
     }
 
     @Transactional
-    public List getTiresByParams(int width, int percentHeight, int radius, String brand, boolean isWinter) {
+    public List getTiresByParams(int width, int percentHeight, int radius, String brand, Boolean isWinter) {
         return tireDao.getTiresByParams(width, percentHeight, radius, brand, isWinter);
     }
 }

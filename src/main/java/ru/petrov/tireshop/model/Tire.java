@@ -18,10 +18,10 @@ public class Tire {
     @Column
     private String brand;
     @Column
-    private boolean isWinter;
+    private Boolean isWinter;
 
     public Tire() {}
-    public Tire(int width, int percentHeight, int radius, String brand, boolean isWinter) {
+    public Tire(int width, int percentHeight, int radius, String brand, Boolean isWinter) {
         super();
         this.width = width;
         this.percentHeight = percentHeight;
@@ -70,11 +70,11 @@ public class Tire {
         this.brand = brand;
     }
 
-    public boolean isWinter() {
+    public Boolean getIsWinter() {
         return isWinter;
     }
 
-    public void setIsWinter(boolean isWinter) {
+    public void setIsWinter(Boolean isWinter) {
         this.isWinter = isWinter;
     }
 
