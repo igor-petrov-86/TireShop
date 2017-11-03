@@ -2,7 +2,6 @@ package ru.petrov.tireshop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.petrov.tireshop.model.Tire;
 import ru.petrov.tireshop.service.TireService;
 
+import javax.servlet.http.HttpSession;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -19,10 +19,10 @@ public class TireController {
     @Autowired
     private TireService tireService;
 
-    protected Map<String,String> widthList = new LinkedHashMap<String,String>();
-    protected Map<String,String> heightList = new LinkedHashMap<String,String>();
-    protected Map<String,String> radiusList = new LinkedHashMap<String,String>();
-    protected Map<String,String> brandList = new LinkedHashMap<String,String>();
+    protected Map<String,String> widthList = new LinkedHashMap<>();
+    protected Map<String,String> heightList = new LinkedHashMap<>();
+    protected Map<String,String> radiusList = new LinkedHashMap<>();
+    protected Map<String,String> brandList = new LinkedHashMap<>();
     {
         widthList.put("235","235");
         widthList.put("245","245");
@@ -44,24 +44,27 @@ public class TireController {
         brandList.put("Nokian Hakkapeliitta 8 Suv", "Nokian Hakkapeliitta 8 Suv");
     }
 
-    protected void setStaticLists (Map<String, Object> map) {
+    protected void setCommonData(HttpSession httpSession, Map<String, Object> map) {
         map.put("widthList", widthList);
         map.put("heightList", heightList);
         map.put("radiusList", radiusList);
         map.put("brandList", brandList);
+        String basketData = (String)httpSession.getAttribute("tire_shop_basket");
+        if (basketData == null || basketData.isEmpty()) map.put("basketCapacity", " пуста");
+        else map.put("basketCapacity", " ("+ basketData.split(",").length +")");
     }
 
     @RequestMapping("/catalog")
-    public String catalog (Map<String, Object> map) {
+    public String catalog (HttpSession httpSession, Map<String, Object> map) {
         Tire tire = new Tire();
         map.put("tire", tire);
         map.put("tireList", tireService.getAllTires());
-        setStaticLists(map);
+        setCommonData(httpSession, map);
         return "catalog";
     }
 
-    @RequestMapping(value="/search", method=RequestMethod.POST)
-    public String search (@ModelAttribute Tire tire, BindingResult result, @RequestParam String action, Map<String, Object> map) {
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public String search (@ModelAttribute Tire tire, HttpSession httpSession, @RequestParam String action, Map<String, Object> map) {
         switch(action.toLowerCase()) {
             case "найти":
                 map.put("tire", tire);
@@ -74,7 +77,17 @@ public class TireController {
                 map.put("tireList", tireService.getAllTires());
                 break;
         }
-        setStaticLists(map);
+        setCommonData(httpSession, map);
         return "catalog";
+    }
+
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public String intoBasket (int id, HttpSession httpSession) {
+        String tireId = "'"+ id +"'";
+        String basketData = (String)httpSession.getAttribute("tire_shop_basket");
+        if (basketData == null) basketData = tireId;
+        else if (!basketData.contains(tireId)) basketData += ","+ tireId;
+        httpSession.setAttribute("tire_shop_basket", basketData);
+        return "redirect:/catalog";
     }
 }

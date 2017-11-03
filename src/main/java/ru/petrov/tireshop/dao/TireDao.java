@@ -11,4 +11,5 @@ public interface TireDao {
     public Tire getTire(int tireID);
     public List getAllTires();
     public List getTiresByParams(int width, int percentHeight, int radius, String brand, Boolean isWinter);
+    public List getTiresInBasket();
 }

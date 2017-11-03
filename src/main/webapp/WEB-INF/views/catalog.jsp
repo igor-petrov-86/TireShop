@@ -12,7 +12,7 @@
 
 <body>
   <div>
-      <a href="/">Главная</a>&nbsp;|&nbsp;<a href="basket">Корзина</a>
+      <a href="/">Главная</a>&nbsp;|&nbsp;<a href="basket">Корзина${basketCapacity}</a>
       <h2><strong>Каталог товаров:</strong></h2>
   </div>
   <div>
@@ -85,16 +85,16 @@
                   <th></th>
                   <c:forEach items="${tireList}" var="tire">
                       <tr>
-                          <td>${tire.width}</td>
-                          <td>${tire.percentHeight}</td>
-                          <td>${tire.radius}<c:out value="''"/></td>
-                          <td>${tire.brand}</td>
+                          <td>${tire.getWidth()}</td>
+                          <td>${tire.getPercentHeight()}</td>
+                          <td>${tire.getRadius()}<c:out value="''"/></td>
+                          <td>${tire.getBrand()}</td>
                           <td>
-                              <c:if test="${tire.isWinter == true}">
+                              <c:if test="${tire.getIsWinter() == true}">
                                   <c:out value="Да"/>
                               </c:if>
                           </td>
-                          <td><a href="#">В корзину</a></td>
+                          <td><a href="get?id=${tire.getId()}">В корзину</a></td>
                       </tr>
                   </c:forEach>
               </table>
