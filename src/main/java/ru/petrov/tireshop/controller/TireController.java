@@ -42,6 +42,11 @@ public class TireController {
         brandList.put("Continental", "Continental");
         brandList.put("GT Radial", "GT Radial");
         brandList.put("Nokian Hakkapeliitta 8 Suv", "Nokian Hakkapeliitta 8 Suv");
+        brandList.put("Hankook", "Hankook");
+        brandList.put("Yokohama", "Yokohama");
+        brandList.put("Goodyear", "Goodyear");
+        brandList.put("BFGoodrich", "BFGoodrich");
+        brandList.put("Bridgestone", "Bridgestone");
     }
 
     protected void setCommonData(HttpSession httpSession, Map<String, Object> map) {
