@@ -69,7 +69,8 @@ public class TireController {
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public String search (@ModelAttribute Tire tire, HttpSession httpSession, @RequestParam String action, Map<String, Object> map) {
+    public String search (@ModelAttribute Tire tire, String tireId, HttpSession httpSession, @RequestParam String action, Map<String, Object> map) {
+        if (tireId != null && !tireId.isEmpty()) this.intoBasket(Integer.parseInt(tireId), httpSession);
         switch(action.toLowerCase()) {
             case "найти":
                 map.put("tire", tire);
@@ -86,14 +87,12 @@ public class TireController {
         return "catalog";
     }
 
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public String intoBasket (int id, HttpSession httpSession) {
+    public void intoBasket (int id, HttpSession httpSession) {
         String tireId = "'"+ id +"'";
         String tireData = tireId +"=4";
         String basketData = (String)httpSession.getAttribute("tire_shop_basket");
         if (basketData == null) basketData = tireData;
         else if (!basketData.contains(tireId)) basketData += ","+ tireData;
         httpSession.setAttribute("tire_shop_basket", basketData);
-        return "redirect:/catalog";
     }
 }

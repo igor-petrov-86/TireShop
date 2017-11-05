@@ -65,3 +65,12 @@ function CheckBasket () {
     });
     if (!badValue) $('#frmBasket').submit();
 }
+
+function IntoBasket (tireToBasketId) {
+    var $objBtn = $("input[type='submit'][name='action'][value='Найти']");
+    var $objHidden = $("input[type='hidden'][id='tireId']");
+    if ($objBtn != null && $objHidden != null) {
+        $objHidden.val(tireToBasketId);
+        $objBtn.click();
+    }
+}

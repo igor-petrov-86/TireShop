@@ -6,8 +6,10 @@
 <head>
     <title>Каталог - Шины для машины</title>
     <link rel="stylesheet" type="text/css" href="/css/main.css"/>
-    <link rel="icon" href="/img/favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico"/>
+    <script type="text/javascript" src="/js/jquery-1.5.1.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
 </head>
 
 <body>
@@ -68,6 +70,7 @@
                   </tr>
                   <tr>
                       <td colspan="2">
+                          <input type="hidden" id="tireId" name="tireId" value=""/>
                           <input type="submit" name="action" value="Сбросить фильтр" />
                           <input type="submit" name="action" value="Найти" />
                       </td>
@@ -94,7 +97,7 @@
                                   <c:out value="Да"/>
                               </c:if>
                           </td>
-                          <td><a href="get?id=${tire.getId()}">В корзину</a></td>
+                          <td><a href="#" onclick="IntoBasket(${tire.getId()});">В корзину</a></td>
                       </tr>
                   </c:forEach>
               </table>
