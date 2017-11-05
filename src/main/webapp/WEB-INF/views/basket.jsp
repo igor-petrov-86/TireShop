@@ -6,8 +6,10 @@
 <head>
     <title>Корзина - Шины для машины</title>
     <link rel="stylesheet" type="text/css" href="/css/main.css"/>
-    <link rel="icon" href="/img/favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico"/>
+    <script type="text/javascript" src="/js/jquery-1.5.1.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
 </head>
 
 <body>
@@ -18,6 +20,7 @@
   <div>
       ${emptyBasket}
       <c:if test="${emptyBasket == ''}">
+          <form action="order" method="POST" id="frmBasket">
           <div>
               <table border="1" align="center">
                   <th>Ширина, мм</th>
@@ -27,27 +30,31 @@
                   <th>Зимние</th>
                   <th>Количество</th>
                   <th></th>
-                  <c:forEach items="${tireList}" var="tire">
+                  <c:forEach var="tire" items="${tireList}">
                       <tr>
-                          <td>${tire.getWidth()}</td>
-                          <td>${tire.getPercentHeight()}</td>
-                          <td>${tire.getRadius()}<c:out value="''"/></td>
-                          <td>${tire.getBrand()}</td>
+                          <td>${tire.get(0).getWidth()}</td>
+                          <td>${tire.get(0).getPercentHeight()}</td>
+                          <td>${tire.get(0).getRadius()}''</td>
+                          <td>${tire.get(0).getBrand()}</td>
                           <td>
-                              <c:if test="${tire.getIsWinter() == true}">
+                              <c:if test="${tire.get(0).getIsWinter() == true}">
                                   <c:out value="Да"/>
                               </c:if>
                           </td>
-                          <td><input type="text" readonly value="4" id="q_${tire.getId()}" name="q_${tire.getId()}"></td>
-                          <td><a href="del?id=${tire.getId()}">Удалить</a></td>
+                          <td>
+                              <input type="hidden" id="tireId" name="tireId" value="${tire.get(0).getId()}"/>
+                              <input type="text" id="tireCnt" name="tireCnt" value="${tire.get(1)}" style="width: 100px;">
+                          </td>
+                          <td><a href="del?id=${tire.get(0).getId()}">Удалить</a></td>
                       </tr>
                   </c:forEach>
               </table>
           </div>
           <br>
           <div>
-              <a href="clear">Очистить корзину</a>&nbsp;|&nbsp;<a href="order">Оформить заказ</a>
+              <a href="clear">Очистить корзину</a>&nbsp;|&nbsp;<a href="#" onclick="CheckBasket();">Перейти к оформлению заказа</a>
           </div>
+          </form>
       </c:if>
   </div>
 </body>

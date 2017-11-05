@@ -35,7 +35,10 @@ public class BasketController {
         String tireId = "'"+ id +"'";
         String basketData = (String)httpSession.getAttribute("tire_shop_basket");
         if (basketData != null && basketData.contains(tireId)) {
-            basketData = basketData.replace(tireId, "").replace(",,", ",");
+            int beg = basketData.indexOf(tireId);
+            int end = basketData.indexOf(",", beg);
+            if (end == -1) end = basketData.length();
+            basketData = basketData.replace(basketData.substring(beg,end), "").replace(",,", ",");
             if (basketData.startsWith(",")) basketData = basketData.substring(1);
             if (basketData.endsWith(",")) basketData = basketData.substring(0, basketData.length() - 1);
             if (!basketData.isEmpty())

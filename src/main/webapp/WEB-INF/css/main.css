@@ -13,3 +13,11 @@ strong {
 a {
     text-decoration: none;
 }
+
+input[type="text"], textarea, select {
+    width: 100%;
+}
+
+input[type="button"], input[type="submit"] {
+    margin-top: 7px;
+}

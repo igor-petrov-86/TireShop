@@ -8,6 +8,7 @@ import ru.petrov.tireshop.dao.TireDao;
 import ru.petrov.tireshop.model.Tire;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -42,11 +43,11 @@ public class TireDaoImpl implements TireDao {
     @Override
     public List getAllTires() {
         String whereCond = "";
-        String excludeId = getCookieId();
+        String excludeId = getCookieId()[0];
         if (!excludeId.isEmpty()) {
             whereCond += " where id not in ("+ excludeId +")";
         }
-        return session.getCurrentSession().createQuery("from Tire"+ whereCond).list();
+        return session.getCurrentSession().createQuery("from Tire "+ whereCond).list();
     }
 
     @Override
@@ -69,7 +70,7 @@ public class TireDaoImpl implements TireDao {
             if (cond.length() > 0) cond.append(" and ");
             cond.append("isWinter = ").append(isWinter ? 1 : 0);
         }
-        String excludeId = getCookieId();
+        String excludeId = getCookieId()[0];
         if (!excludeId.isEmpty()) {
             if (cond.length() > 0) cond.append(" and ");
             cond.append("id not in (").append(excludeId).append(")");
@@ -81,15 +82,33 @@ public class TireDaoImpl implements TireDao {
 
     @Override
     public List getTiresInBasket() {
-        String tireId = getCookieId();
-        if (!tireId.isEmpty()) { return session.getCurrentSession().createQuery("from Tire where id in ("+ tireId +")").list(); }
+        String[] tireData = getCookieId();
+        if (!tireData[0].isEmpty()) {
+            String[] arrId = tireData[0].split(",");
+            String[] arrCnt = tireData[1].split(",");
+            List<List> retList = new ArrayList<>(arrId.length);
+            for (int i=0; i<arrId.length; i++) {
+                List elem = new ArrayList(2);
+                elem.add(this.getTire(Integer.parseInt(arrId[i])));
+                elem.add(Integer.parseInt(arrCnt[i]));
+                retList.add(elem);
+            }
+            return retList;
+        }
         return null;
     }
 
-    protected String getCookieId () {
+    protected String[] getCookieId () {
         String basketData = (String)httpSession.getAttribute("tire_shop_basket");
-        if (basketData != null) basketData = basketData.replace("'", "");
-        else basketData = "";
-        return basketData;
+        StringBuilder tireId = new StringBuilder("");
+        StringBuilder tireCnt = new StringBuilder("");
+        if (basketData != null) {
+            for (String tire: basketData.split(",")) {
+                String[] tmp = tire.split("=");
+                tireId.append(tireId.length() > 0 ? "," : "").append(tmp[0].replace("'", ""));
+                tireCnt.append(tireCnt.length() > 0 ? "," : "").append(Integer.parseInt(tmp[1]));
+            }
+        }
+        return new String[]{tireId.toString(), tireCnt.toString()};
     }
 }

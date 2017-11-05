@@ -89,9 +89,10 @@ public class TireController {
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public String intoBasket (int id, HttpSession httpSession) {
         String tireId = "'"+ id +"'";
+        String tireData = tireId +"=4";
         String basketData = (String)httpSession.getAttribute("tire_shop_basket");
-        if (basketData == null) basketData = tireId;
-        else if (!basketData.contains(tireId)) basketData += ","+ tireId;
+        if (basketData == null) basketData = tireData;
+        else if (!basketData.contains(tireId)) basketData += ","+ tireData;
         httpSession.setAttribute("tire_shop_basket", basketData);
         return "redirect:/catalog";
     }
